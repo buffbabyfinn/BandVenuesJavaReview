@@ -81,4 +81,23 @@ public class Books {
       .executeUpdate();
     }
   }
+
+  public void addAuthor(int authorId) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO authors_books (author_id, book_id) VALUES (:author_id, :book_id)";
+      con.createQuery(sql)
+      .addParameter("author_id", authorId)
+      .addParameter("book_id", id)
+      .executeUpdate();
+    }
+  }
+
+  public List<Authors> getAuthors() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT first_name, last_name, authors.id FROM authors JOIN authors_books ON (authors_books.author_id = authors.id) JOIN books ON (authors_books.book_id = books.id) WHERE books.id = :id";
+      return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetch(Authors.class);
+    }
+  }
 }

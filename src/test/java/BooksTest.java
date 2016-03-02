@@ -49,4 +49,14 @@ public class BooksTest {
     myBooks.delete();
     assertEquals(Books.all().size(), 0);
   }
+
+  @Test
+  public void addAuthor_assignsAuthorToBook() {
+    Books myBooks = new Books("Neverwhere", 7);
+    myBooks.save();
+    Authors firstAuthors = new Authors("Niel", "Gaiman");
+    firstAuthors.save();
+    myBooks.addAuthor(firstAuthors.getId());
+    assertEquals(1, myBooks.getAuthors().size());
+  }
 }
