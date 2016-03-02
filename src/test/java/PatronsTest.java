@@ -49,4 +49,5 @@ public class PatronsTest {
     myPatrons.delete();
     assertEquals(Patrons.all().size(), 0);
   }
+
 }

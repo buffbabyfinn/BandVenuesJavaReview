@@ -24,6 +24,12 @@ public class Books {
     return copies;
   }
 
+  public boolean isCheckedOut() {
+    if (copies >= 1) {
+      return true;
+    } return false;
+  }
+
   @Override
   public boolean equals(Object otherBooks){
     if (!(otherBooks instanceof Books)) {
