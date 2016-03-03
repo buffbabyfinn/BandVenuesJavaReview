@@ -72,5 +72,43 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/patrons/new", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String firstName = request.queryParams("patronFirstName");
+      String lastName = request.queryParams("patronLastName");
+      String email = request.queryParams("patronEmail");
+      Patrons newPatron = new Patrons(firstName, lastName, email);
+      newPatron.save();
+
+      model.put("patrons", Patrons.all());
+      model.put("template", "templates/Patrons.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/patrons/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Patrons patron = Patrons.find(Integer.parseInt(request.params("id")));
+
+      model.put("patron", patron);
+      model.put("checkouts", patron.getPatronsCheckout());
+      model.put("books", Books.all());
+      model.put("template", "templates/Patron.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/patrons/:patronId/checkout/:bookId", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Patrons patron = Patrons.find(Integer.parseInt(request.params("patronId")));
+      Books book = Books.find(Integer.parseInt(request.params("bookId")));
+      Checkout newCheckout = new Checkout(patron.getId(), book.getId());
+      newCheckout.save();
+
+      model.put("patron", patron);
+      model.put("checkouts", patron.getPatronsCheckout());
+      model.put("books", Books.all());
+      model.put("template", "templates/Patron.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
   }
 }

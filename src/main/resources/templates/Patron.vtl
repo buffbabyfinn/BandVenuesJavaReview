@@ -7,10 +7,13 @@
 <li><h5>Email: $patron.getEmail()</h5></li>
 </ul>
 <br>
-<h3>Books $patron.getName() has checked out:</h3>
+<h3>Books $patron.getFirstName() has checked out:</h3>
 <ul>
   #foreach ($checkout in $checkouts)
     <li>$checkout.getBookTitle() Due: $checkout.getDueDate()</li>
+    #if($checkout.isOverdue())
+      <h4>YOUR BOOK IS OVER-FUCKING-DUE</h4>
+    #end
   #end
 </ul>
 <br>

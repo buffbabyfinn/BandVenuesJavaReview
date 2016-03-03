@@ -10,14 +10,14 @@ public class Checkout {
   private int id;
   private int book_id;
   private int patron_id;
-  private String due_date;
+  private Date due_date;
   private boolean returned;
 
   public Checkout(int book_id, int patron_id) {
     this.book_id = book_id;
     this.patron_id = patron_id;
     this.initDueDate();
-    returned = false;
+    this.returned = false;
   }
 
   public int getId() {
@@ -33,9 +33,8 @@ public class Checkout {
   }
 
   public String getDueDate() {
-    // DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    // return dateFormat.format(due_date);
-    return due_date;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    return dateFormat.format(due_date);
   }
 
   public boolean getReturned() {
@@ -58,8 +57,7 @@ public class Checkout {
     c.setTime(date);
     c.add(Calendar.WEEK_OF_MONTH, 2);
     date = c.getTime();
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    this.due_date = dateFormat.format(date);
+    this.due_date = date;
   }
 
   public static List<Checkout> all() {
@@ -115,12 +113,18 @@ public class Checkout {
       .addParameter("id", id)
       .executeUpdate();
     }
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE books SET copies = copies + 1 WHERE id = :book_id";
+      con.createQuery(sql)
+      .addParameter("book_id", this.book_id)
+      .executeUpdate();
+    }
   }
 
   public static List<Checkout> getOverdue() {
     // Calendar cal = Calendar.getInstance();
     // cal.add(Calendar.DATE, 0);
-    String sql = "SELECT * FROM checkout WHERE due_date > now()";
+    String sql = "SELECT * FROM checkout WHERE due_date < now() AND returned = false";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
       // .addParameter("date", cal.getTime())
@@ -139,12 +143,19 @@ public class Checkout {
   }
 
   public String getOverduePatron() {
-    String sql = "SELECT * FROM patrons JOIN checkout ON (checkout.patron_id = patrons.id) WHERE checkout.id = :id";
+    String sql = "SELECT patrons.* FROM patrons JOIN checkout ON (checkout.patron_id = patrons.id) WHERE checkout.id = :id";
     try(Connection con = DB.sql2o.open()) {
     Patrons overduePatron = con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetchFirst(Patrons.class);
       return String.format("%s %s - %s", overduePatron.getFirstName(), overduePatron.getLastName(), overduePatron.getEmail());
     }
+  }
+
+  public Boolean isOverdue() {
+    Date date = new Date();
+    if(date.after(due_date)) {
+      return true;
+    } return false;
   }
 }

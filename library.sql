@@ -139,7 +139,8 @@ CREATE TABLE checkout (
     id integer NOT NULL,
     book_id integer,
     patron_id integer,
-    due_date date
+    due_date date,
+    returned boolean
 );
 
 
@@ -241,6 +242,7 @@ ALTER TABLE ONLY patrons ALTER COLUMN id SET DEFAULT nextval('patrons_id_seq'::r
 --
 
 COPY authors (id, first_name, last_name) FROM stdin;
+1	James	Joyce
 \.
 
 
@@ -249,6 +251,7 @@ COPY authors (id, first_name, last_name) FROM stdin;
 --
 
 COPY authors_books (id, author_id, book_id) FROM stdin;
+1	1	1
 \.
 
 
@@ -256,14 +259,14 @@ COPY authors_books (id, author_id, book_id) FROM stdin;
 -- Name: authors_books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('authors_books_id_seq', 1, false);
+SELECT pg_catalog.setval('authors_books_id_seq', 1, true);
 
 
 --
 -- Name: authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('authors_id_seq', 1, false);
+SELECT pg_catalog.setval('authors_id_seq', 1, true);
 
 
 --
@@ -271,6 +274,7 @@ SELECT pg_catalog.setval('authors_id_seq', 1, false);
 --
 
 COPY books (id, title, copies) FROM stdin;
+1	abcd	4
 \.
 
 
@@ -278,14 +282,14 @@ COPY books (id, title, copies) FROM stdin;
 -- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('books_id_seq', 1, false);
+SELECT pg_catalog.setval('books_id_seq', 1, true);
 
 
 --
 -- Data for Name: checkout; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY checkout (id, book_id, patron_id, due_date) FROM stdin;
+COPY checkout (id, book_id, patron_id, due_date, returned) FROM stdin;
 \.
 
 
@@ -301,6 +305,8 @@ SELECT pg_catalog.setval('checkout_id_seq', 1, false);
 --
 
 COPY patrons (id, first_name, last_name, email) FROM stdin;
+1	a	b	c@g.com
+2	a	b	c@g.com
 \.
 
 
@@ -308,7 +314,7 @@ COPY patrons (id, first_name, last_name, email) FROM stdin;
 -- Name: patrons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('patrons_id_seq', 1, false);
+SELECT pg_catalog.setval('patrons_id_seq', 2, true);
 
 
 --
