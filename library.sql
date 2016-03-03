@@ -139,7 +139,7 @@ CREATE TABLE checkout (
     id integer NOT NULL,
     book_id integer,
     patron_id integer,
-    due_date character varying
+    due_date date
 );
 
 

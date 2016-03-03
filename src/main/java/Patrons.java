@@ -98,5 +98,6 @@ public class Patrons {
       return con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetch(Checkout.class);
+    }
   }
 }

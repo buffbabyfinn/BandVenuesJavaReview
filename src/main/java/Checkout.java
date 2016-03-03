@@ -70,7 +70,7 @@ public class Checkout {
   }
 
   public void save() {
-    Book book = Book.find(this.book_id);
+    Books book = Books.find(this.book_id);
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO checkout(book_id, patron_id, due_date, returned) VALUES (:book_id, :patron_id, :due_date, :returned)";
       this.id = (int) con.createQuery(sql, true)
@@ -118,28 +118,33 @@ public class Checkout {
   }
 
   public static List<Checkout> getOverdue() {
-    String sql = "SELECT * FROM checkout WHERE due_date < Convert(date, getdate())";
+    // Calendar cal = Calendar.getInstance();
+    // cal.add(Calendar.DATE, 0);
+    String sql = "SELECT * FROM checkout WHERE due_date > now()";
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(Checkout.class);
+      return con.createQuery(sql)
+      // .addParameter("date", cal.getTime())
+      .executeAndFetch(Checkout.class);
     }
   }
 
   public String getBookTitle() {
-    String sql = "SELECT title FROM books JOIN checkout ON (checkout.book_id = books.id) WHERE checkout.id = :id";
+    String sql = "SELECT books.* FROM books JOIN checkout ON (checkout.book_id = books.id) WHERE checkout.id = :id";
     try(Connection con = DB.sql2o.open()) {
-    return con.createQuery(sql)
+    Books titleBook =  con.createQuery(sql)
       .addParameter("id", id)
-      .executeAndFetchFirst(String);
+      .executeAndFetchFirst(Books.class);
+    return titleBook.getTitle();
     }
   }
 
   public String getOverduePatron() {
     String sql = "SELECT * FROM patrons JOIN checkout ON (checkout.patron_id = patrons.id) WHERE checkout.id = :id";
     try(Connection con = DB.sql2o.open()) {
-    Patron overduePatron = con.createQuery(sql)
+    Patrons overduePatron = con.createQuery(sql)
       .addParameter("id", id)
-      .executeAndFetchFirst(Patron.class);
-      return String.format("%s %s - %s", overduePatron.getFirstName(), overduePatron.getLastName(), overduePatron.getEmail())
+      .executeAndFetchFirst(Patrons.class);
+      return String.format("%s %s - %s", overduePatron.getFirstName(), overduePatron.getLastName(), overduePatron.getEmail());
     }
   }
 }
