@@ -26,6 +26,26 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/admins/books/searchTitles", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String searchTitle = request.queryParams("searchTitle");
+      List<Books> bookList = Books.searchTitles(searchTitle);
+      model.put("books", bookList);
+      model.put("overdues", Checkout.getOverdue());
+      model.put("template", "templates/Admins.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/admins/books/searchAuthors", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String searchAuthor = request.queryParams("searchAuthors");
+      List<Books> bookList = Authors.searchAuthors(searchAuthor);
+      model.put("books", bookList);
+      model.put("overdues", Checkout.getOverdue());
+      model.put("template", "templates/Admins.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     post("/admins/books/new", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String title = request.queryParams("bookTitle");
@@ -100,7 +120,7 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Patrons patron = Patrons.find(Integer.parseInt(request.params("patronId")));
       Books book = Books.find(Integer.parseInt(request.params("bookId")));
-      Checkout newCheckout = new Checkout(patron.getId(), book.getId());
+      Checkout newCheckout = new Checkout(book.getId(), patron.getId());
       newCheckout.save();
 
       model.put("patron", patron);
@@ -110,5 +130,17 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/patrons/:patronId/return/:checkoutId", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Patrons patron = Patrons.find(Integer.parseInt(request.params("patronId")));
+      Checkout checkoutReturn = Checkout.find(Integer.parseInt(request.params("checkoutId")));
+      checkoutReturn.returnBook();
+
+      model.put("patron", patron);
+      model.put("checkouts", patron.getPatronsCheckout());
+      model.put("books", Books.all());
+      model.put("template", "templates/Patron.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }

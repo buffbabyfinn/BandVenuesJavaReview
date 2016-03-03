@@ -115,4 +115,13 @@ public class Books {
       .executeAndFetch(Checkout.class);
     }
   }
+
+  public static List<Books> searchTitles(String searchTitle) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM books WHERE title = :searchTitle";
+      return con.createQuery(sql)
+      .addParameter("searchTitle", searchTitle)
+      .executeAndFetch(Books.class);
+    }
+  }
 }

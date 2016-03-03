@@ -10,9 +10,16 @@
 <h3>Books $patron.getFirstName() has checked out:</h3>
 <ul>
   #foreach ($checkout in $checkouts)
-    <li>$checkout.getBookTitle() Due: $checkout.getDueDate()</li>
+    #if($checkout.getReturned())
+    <li>$checkout.getBookTitle() Returned!</li>
+    #else
+    <form class="form-inline" id="return$checkout.getId()" action="/patrons/$patron.getId()/return/$checkout.getId()" method="post">
+        <li>$checkout.getBookTitle() Due: $checkout.getDueDate()
+      <button type="submit" class="btn btn-xs btn-danger">Return</button></li>
+    </form>
     #if($checkout.isOverdue())
       <h4>YOUR BOOK IS OVER-FUCKING-DUE</h4>
+      #end
     #end
   #end
 </ul>
@@ -21,7 +28,7 @@
 <ul>
   #foreach ($book in $books)
     #if ($book.isCheckedOut())
-      <li>$book.getTitle() -- All copies checked out</li>
+      <li><ul>$book.getTitle()</ul> -- All copies checked out</li>
     #else
     <form class="form-inline" id="checkout$book.getId()" action="/patrons/$patron.getId()/checkout/$book.getId()" method="post">
       <li>$book.getTitle()

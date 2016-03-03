@@ -108,14 +108,12 @@ public class Checkout {
 
   public void returnBook() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE checkout SET returned = true WHERE id = :id";
+      String sql = "UPDATE checkout SET returned = 'true' WHERE id = :id";
       con.createQuery(sql)
       .addParameter("id", id)
       .executeUpdate();
-    }
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE books SET copies = copies + 1 WHERE id = :book_id";
-      con.createQuery(sql)
+      String sql2 = "UPDATE books SET copies = copies + 1 WHERE id = :book_id";
+      con.createQuery(sql2)
       .addParameter("book_id", this.book_id)
       .executeUpdate();
     }

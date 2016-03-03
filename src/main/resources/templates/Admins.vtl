@@ -10,6 +10,22 @@
 <br>
 <div class="row">
   <div class="col-sm-6">
+    <form action="/admins/books/searchTitles" method="get">
+      <label>Search for a book by title:</label>
+      <input type="text" name="searchTitle" id="searchTitle" required autofocus="autofocus">
+      <button type="submit" name="searchTitleBtn" class="btn btn-info">Submit</button>
+    </form>
+  </div>
+  <div class="col-sm-6">
+    <form action="/admins/books/searchAuthors" method="get">
+      <label>Search for a book by author's last name:</label>
+      <input type="text" name="searchAuthor" id="searchAuthor" required>
+      <button type="submit" name="searchAuthorBtn" class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
     <h2>Library Catalog:</h2>
     <ul>
       #foreach ($book in $books)

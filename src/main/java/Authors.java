@@ -83,4 +83,13 @@ public class Authors {
       .executeUpdate();
     }
   }
+
+  public static List<Books> searchAuthors(String searchAuthors) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT books.* FROM books JOIN authors_books ON (authors_books.book_id = books.id) JOIN authors ON (authors_books.author_id = authors.id) WHERE authors.last_name = :searchAuthors";
+      return con.createQuery(sql)
+      .addParameter("searchAuthors", searchAuthors)
+      .executeAndFetch(Books.class);
+    }
+  }
 }
