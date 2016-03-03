@@ -91,4 +91,12 @@ public class Patrons {
       .executeUpdate();
     }
   }
+
+  public List<Checkout> getPatronsCheckout() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT checkout.* FROM checkout JOIN patrons ON (checkout.patron_id = patrons.id) WHERE patrons.id = :id";
+      return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetch(Checkout.class);
+  }
 }

@@ -1,0 +1,27 @@
+<h1>Become A Patron of the Library!</h1>
+<br>
+<form action="/patrons" method="post">
+  <label>Patron's first name:</label>
+  <input type="text" name="patronFirstName" id="patronFirstName" required autofocus="autofocus">
+  <label>Patron's last name:</label>
+  <input type="text" name="patronLastName" id="patronLastName" required>
+  <label>Patron's email:</label>
+  <input type="text" name="patronEmail" id="patronEmail" required>
+  <button type="submit" name="patronButton" class="btn btn-info">Submit</button>
+</form>
+<br>
+<br>
+<h3>View All Patrons:</h3>
+<ul>
+  #foreach ($patron in $patrons)
+    <a href="/patrons/$patron.getId()"><li>$patron.getFirstName() $patron.getLastName()</li></a>
+  #end
+</ul>
+<br>
+<a href="/admins" class="btn btn-primary">Admin Page</a>
+<br>
+<br>
+<a href="/patrons" class="btn btn-primary">Patron Page</a>
+<br>
+<br>
+<a href="/" class="btn btn-success">Home</a>

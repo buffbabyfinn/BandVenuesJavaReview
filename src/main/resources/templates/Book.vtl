@@ -1,0 +1,31 @@
+<h1>$book.getTitle()</h1>
+<br>
+<h4>In stock: $book.getCopies()</h4>
+<h4>Checked Out: $book.getCheckedOut().size()</h4>
+<br>
+<h2>Add Authors to $book.getTitle()</h2>
+<br>
+<form action="/admins/books/$book.getId()" method="post">
+  <label>Author's first name:</label>
+  <input type="text" name="authorFirstName" id="authorFirstName" required autofocus="autofocus">
+  <label>Author's last name:</label>
+  <input type="text" name="authorLastName" id="authorLastName" required>
+  <button type="submit" name="authorButton" class="btn btn-info">Submit</button>
+</form>
+<br>
+<br>
+<h3>All Authors:</h3>
+<br>
+<ul>
+  #foreach ($author in $authors)
+    <li>$author.getLastName(), $author.getFirstName()</li>
+  #end
+</ul>
+<br>
+<a href="/admins" class="btn btn-primary">Admin Page</a>
+<br>
+<br>
+<a href="/patrons" class="btn btn-primary">Patron Page</a>
+<br>
+<br>
+<a href="/" class="btn btn-success">Home</a>

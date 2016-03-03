@@ -106,4 +106,13 @@ public class Books {
       .executeAndFetch(Authors.class);
     }
   }
+
+  public List<Checkout> getCheckedOut() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT book_id, patron_id, due_date, checkout.id FROM checkout JOIN checkout ON (checkout.book_id = books.id) WHERE books.id = :id";
+      return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetch(Checkout.class);
+    }
+  }
 }

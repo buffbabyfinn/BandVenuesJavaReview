@@ -86,6 +86,7 @@ public class Checkout {
       con.createQuery(sql)
       .addParameter("book_id", this.book_id)
       .executeUpdate();
+    }
   }
 
   public static Checkout find(int id) {
@@ -113,11 +114,32 @@ public class Checkout {
       con.createQuery(sql)
       .addParameter("id", id)
       .executeUpdate();
+    }
   }
 
-  public List<Checkout> getOverdue() {
+  public static List<Checkout> getOverdue() {
     String sql = "SELECT * FROM checkout WHERE due_date < Convert(date, getdate())";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Checkout.class);
+    }
+  }
+
+  public String getBookTitle() {
+    String sql = "SELECT title FROM books JOIN checkout ON (checkout.book_id = books.id) WHERE checkout.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+    return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetchFirst(String);
+    }
+  }
+
+  public String getOverduePatron() {
+    String sql = "SELECT * FROM patrons JOIN checkout ON (checkout.patron_id = patrons.id) WHERE checkout.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+    Patron overduePatron = con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetchFirst(Patron.class);
+      return String.format("%s %s - %s", overduePatron.getFirstName(), overduePatron.getLastName(), overduePatron.getEmail())
+    }
   }
 }
