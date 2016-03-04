@@ -1,0 +1,46 @@
+<div class="container-fluid page-header">
+  <h2>Add, List, and Search bands:</h2>
+</div>
+<br>
+<div class="container-fluid">
+<div class="row">
+  <div class="col-sm-6">
+    <form action="/admins/books/searchTitles" method="get">
+      <label>Search for a band by name:</label>
+      <input type="text" name="searchBand" id="searchBand" required autofocus="autofocus">
+      <button type="submit" name="searchBandBtn" class="btn btn-info">Submit</button>
+    </form>
+  </div>
+  <div class="col-sm-6">
+    <h4>Add A Band</h4>
+    <br>
+    <form action="/bands/new" method="post">
+      <label>Band Name:</label>
+      <input type="text" name="bandName" id="bandName" required autofocus="autofocus">
+      <button type="submit" name="bandButton" class="btn btn-success">Submit</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+<h4>All Bands:</h4>
+  <ul>
+    #foreach ($band in $bands)
+      <a href="/bands/$band.getId()"><li>$band.getName()</li></a>
+    #end
+  </ul>
+</div>
+<div class="col-sm-6">
+<h4>Searched Bands:</h4>
+  #foreach ($bandList in $bandLists)
+    <a href="/bands/$band.getId()"><li>$band.getName()</li></a>
+  #end
+</div>
+</div>
+<div class="container-fluid footer">
+<br>
+<a href="/venues" class="btn btn-primary">Add/View Venues</a>
+<br>
+<br>
+<a href="/" class="btn btn-success">Home</a>
+</div>

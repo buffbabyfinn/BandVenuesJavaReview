@@ -27,6 +27,17 @@ public class BandTest {
     assertTrue(Band.all().get(0).equals(firstBand));
   }
 
+
+  @Test
+  public void addVenue_assignsVenueToBook() {
+    Band myBand = new Band("Dr Dog");
+    myBand.save();
+    Venue myVenue = new Venue("Mississippi Studios", "Portland, OR");
+    myVenue.save();
+    myBand.addVenue(myVenue.getId());
+    assertEquals(1, myBand.getVenues().size());
+  }
+
   @Test
   public void all_returnsAllBands() {
     Band firstBand = new Band("Toe");
@@ -36,10 +47,10 @@ public class BandTest {
 
   @Test
   public void find_findBandInDatabase() {
-  Band firstBand = new Band("Toe");
-  firstBand.save();
-  Band savedBand = Band.find(firstBand.getId());
-  assertTrue(firstBand.equals(savedBand));
+    Band firstBand = new Band("Toe");
+    firstBand.save();
+    Band savedBand = Band.find(firstBand.getId());
+    assertTrue(firstBand.equals(savedBand));
   }
 
   @Test

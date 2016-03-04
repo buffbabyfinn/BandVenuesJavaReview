@@ -1,0 +1,34 @@
+<div class="container-fluid page-header">
+<h1>$band.getName()</h1>
+</div>
+<br>
+<div class="container-fluid">
+<h2>has played shows at:</h2>
+<br>
+<ul>
+  #foreach ($bandVenue in $bandVenues)
+    <li>$venue.getName(), $venue.getLocation()</li>
+  #end
+</ul>
+<br>
+<br>
+<h4>Add a new venue $band.getName() has played at:</h4>
+<form action="/bands/$band.getId()/addVenue" method="post">
+  #foreach ($venue in $venues)
+    #if (!$bandVenue)
+      <input type="checkbox" value="$venue.getId()">$venue.getName()
+    #end
+  #end
+  <button type="submit" name="bandVenueButton" class="btn btn-info">Submit</button>
+</form>
+<br>
+<br>
+<h3>All Authors:</h3>
+<br>
+<a href="/admins" class="btn btn-primary">Admin Page</a>
+<br>
+<br>
+<a href="/patrons" class="btn btn-primary">Patron Page</a>
+<br>
+<br>
+<a href="/" class="btn btn-success">Home</a>
