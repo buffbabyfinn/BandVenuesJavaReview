@@ -45,9 +45,10 @@ public class Venue {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO venues(venue_name) VALUES (:venue_name)";
+      String sql = "INSERT INTO venues(venue_name, location) VALUES (:venue_name, :location)";
       this.id = (int) con.createQuery(sql, true)
-        .addParameter("venue_name", this.venue_name)
+        .addParameter("venue_name", venue_name)
+        .addParameter("location", location)
         .executeUpdate()
         .getKey();
     }

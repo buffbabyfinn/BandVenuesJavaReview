@@ -1,17 +1,8 @@
 <div class="container-fluid page-header">
-  <h2>Add, List, and Search bands:</h2>
+  <h2>Add and View bands:</h2>
 </div>
 <br>
 <div class="container-fluid">
-<div class="row">
-  <div class="col-sm-6">
-    <form action="/bands/search" method="get">
-      <label>Search for a band by name:</label>
-      <input type="text" name="searchBand" id="searchBand" required autofocus="autofocus">
-      <button type="submit" name="searchBandBtn" class="btn btn-info">Submit</button>
-    </form>
-  </div>
-  <div class="col-sm-6">
     <h4>Add A Band</h4>
     <br>
     <form action="/bands/new" method="post">
@@ -19,17 +10,12 @@
       <input type="text" name="bandName" id="bandName" required autofocus="autofocus">
       <button type="submit" name="bandButton" class="btn btn-success">Submit</button>
     </form>
-  </div>
-</div>
   <h2>All Bands:</h2>
   <ul>
     #foreach ($band in $bands)
-      <form class="form-inline" id="delete$band.getId()" action="/bands/$band.getId()/delete/$book.getId()" method="post">
-        <li>$band.getName()
-        <button type="submit" class="btn btn-xs btn-danger">Delete $band.getName()</button>
-      </form>
-      <form class="form-inline" id="update$band.getId()" action="/bands/$band.getId()/update" method="post">
-        <button type="submit" class="btn btn-xs btn-warning">Update $band.getName()</button></li>
+      <form class="form-inline" id="delete$band.getId()" action="/bands/$band.getId()/delete" method="post">
+        <a href="/bands/$band.getId()"><li>$band.getName()</a>
+        <button type="submit" id="delete$band.getId()" class="btn btn-xs btn-danger">Delete $band.getName()</button></li>
       </form>
     #end
   </ul>

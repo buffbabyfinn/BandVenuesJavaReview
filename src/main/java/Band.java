@@ -69,33 +69,25 @@ public class Band {
   }
 
   public void update(String newName) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE bands SET name = :newName WHERE id = :id";
-      con.createQuery(sql)
-      .addParameter("name", newName)
-      .addParameter("id", id)
-      .executeUpdate();
-    }
-  }
+     String sql = "UPDATE bands SET name = :name WHERE id = :id";
+     try(Connection con = DB.sql2o.open()) {
+       con.createQuery(sql)
+         .addParameter("name", newName)
+         .addParameter("id", id)
+         .executeUpdate();
+     }
+   }
 
-  public static List<Band> searchBands(String searchName) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM bands WHERE name LIKE ':searchName%'";
-      return con.createQuery(sql)
-      .addParameter("searchName", searchName)
-      .executeAndFetch(Band.class);
-    }
-  }
 
   public void addVenue(int venueId) {
-  try(Connection con = DB.sql2o.open()) {
-    String sql = "INSERT INTO bands_venues (band_id, venue_id) VALUES (:band_id, :venue_id)";
-    con.createQuery(sql)
-      .addParameter("band_id", id)
-      .addParameter("venue_id", venueId)
-      .executeUpdate();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO bands_venues (band_id, venue_id) VALUES (:band_id, :venue_id)";
+      con.createQuery(sql)
+        .addParameter("band_id", id)
+        .addParameter("venue_id", venueId)
+        .executeUpdate();
+    }
   }
-}
 
 public List<Venue> getVenues() {
   try(Connection con = DB.sql2o.open()) {
@@ -103,6 +95,6 @@ public List<Venue> getVenues() {
     return con.createQuery(sql)
     .addParameter("id", id)
     .executeAndFetch(Venue.class);
+    }
   }
-}
 }
