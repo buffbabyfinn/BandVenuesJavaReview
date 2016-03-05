@@ -43,15 +43,15 @@ public class AppTest extends FluentTest {
   }
 
 
-  @Test
-  public void bandUpdateTest() {
-    Band testBand = new Band("Neutral Milk Hotel");
-    testBand.save();
-    String bandpage = String.format("http://localhost:4567/bands/%d/update", testBand.getId());
-    goTo(bandpage);
-    fill("#nameUpdate").with("Ty Segall");
-    submit("#nameUpdate");
-    assertThat(pageSource()).contains("Ty Segall");
-  }
+  // @Test
+  // public void bandUpdateTest() {
+  //   Band testBand = new Band("Neutral Milk Hotel");
+  //   testBand.save();
+  //   String bandpage = String.format("http://localhost:4567/bands/%d/update", testBand.getId());
+  //   goTo(bandpage);
+  //   fill("#nameUpdate").with("Ty Segall");
+  //   submit("#nameUpdate");
+  //   assertThat(pageSource()).contains("Ty Segall");
+  // }
 
 }
