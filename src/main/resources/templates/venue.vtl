@@ -1,0 +1,19 @@
+<h3>$venue.getName()</h3>
+<br>
+<br>
+<h5>$venue.getLocation()</h5>
+<br>
+<p>
+  Bands that have played at $venue.getName():
+</p>
+<ul>
+  #foreach ($venueBand in $venueBands)
+    <li>$venueBand.getName()</li>
+  #end
+</ul>
+<br>
+<div class="btn-group inline pull-left">
+<a href="/bands" class="btn btn-primary">View/Add Band</a>
+<a href="/venues" class="btn btn-info">Back to Venues</a>
+<a href="/" class="btn btn-success">Home</a>
+</div>
