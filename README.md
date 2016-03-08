@@ -18,6 +18,8 @@ _With this page, you can add bands, venues, assign venues to bands, and see all 
 
 * _Open psql shell as an administrator and import the `band_venues` sequel file to your specified folder path. Mine was:_
 ```
+$ CREATE database band_venues;
+$\c band_venues;
 $ \i 'C:/Users/Megan/Documents/Programming/java/band-venues/band_venues.sql';
 ```
 * _Make sure that the user and password in the DB.java file and the DatabaseRule.java file match the username and password settings for your postgres, for example in DB.java:_
