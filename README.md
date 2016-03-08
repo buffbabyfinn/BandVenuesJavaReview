@@ -13,17 +13,20 @@ _With this page, you can add bands, venues, assign venues to bands, and see all 
 * _Clone this repository_
 * _Install the [Java SDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and [Java SRE](http://www.java.com/en/)._
 * _[Install gradle](http://codetutr.com/2013/03/23/how-to-install-gradle/)_
-* _Open a terminal and run Postgres_
+* _Open Postgres 9.3_
+* _Connect to database 9.3_
+
+* _Open psql shell as an administrator and import the `band_venues` sequel file to your specified folder path. Mine was:_
 ```
-$ postgres
+$ \i 'C:/Users/Megan/Documents/Programming/java/band-venues/band_venues.sql';
 ```
-* _Open a new tab in terminal and create the `band_venues` database:_
+* _Make sure that the user and password in the DB.java file and the DatabaseRule.java file match the username and password settings for your postgres, for example in DB.java:_
+
 ```
-$ psql
-$ CREATE DATABASE band_venues;
-$ psql band_venues < band_venues.sql
+  public static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/band_venues", null, null);
 ```
-* _Navigate back to the directory where this repository has been cloned and run gradle:_
+
+* _Go back to your command prompt and run gradle:_
 ```
 $ gradle run
 ```
